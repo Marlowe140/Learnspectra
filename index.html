@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LearnSpectra — Your STEM Journey Starts Here</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #080808;
+      --black2: #0f0f0f;
+      --black3: #161616;
+      --black4: #1e1e1e;
+      --mint: #4dffd2;
+      --mint-dim: #2ecba8;
+      --mint-faint: rgba(77,255,210,0.07);
+      --mint-border: rgba(77,255,210,0.15);
+      --white: #f5f5f5;
+      --gray: #888;
+      --gray2: #555;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--mint);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--mint);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.2s, height 0.2s, opacity 0.2s;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--mint-border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--mint);
+      letter-spacing: 0.12em;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--mint); }
+    .nav-cta {
+      background: var(--mint);
+      color: var(--black);
+      padding: 0.55rem 1.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: 'Syne', sans-serif;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: #fff; transform: translateY(-1px); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(77,255,210,0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(77,255,210,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(77,255,210,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77,255,210,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .logo-img {
+      width: min(420px, 80vw);
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.9s ease both;
+      filter: drop-shadow(0 0 30px rgba(77,255,210,0.3));
+    }
+    .hero-tagline {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--white);
+      max-width: 700px;
+      line-height: 1.25;
+      animation: fadeUp 0.9s 0.15s ease both;
+    }
+    .hero-tagline span { color: var(--mint); }
+    .hero-sub {
+      margin-top: 1rem;
+      color: var(--gray);
+      font-size: 1.05rem;
+      max-width: 520px;
+      animation: fadeUp 0.9s 0.25s ease both;
+    }
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.9s 0.35s ease both;
+    }
+    .btn-primary {
+      background: var(--mint);
+      color: var(--black);
+      padding: 0.9rem 2.2rem;
+      border-radius: 4px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 20px rgba(77,255,210,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 35px rgba(77,255,210,0.5); }
+    .btn-ghost {
+      border: 1px solid var(--mint-border);
+      color: var(--mint);
+      padding: 0.9rem 2.2rem;
+      border-radius: 4px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-ghost:hover { background: var(--mint-faint); border-color: var(--mint); }
+
+    /* COUNTDOWN */
+    .countdown-wrap {
+      margin-top: 3rem;
+      animation: fadeUp 0.9s 0.45s ease both;
+    }
+    .countdown-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 0.8rem;
+    }
+    .countdown {
+      display: flex; gap: 1.5rem; justify-content: center;
+    }
+    .countdown-block {
+      text-align: center;
+    }
+    .countdown-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--mint);
+      line-height: 1;
+    }
+    .countdown-unit {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray2);
+      margin-top: 0.3rem;
+    }
+    .countdown-sep {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      color: var(--gray2);
+      align-self: flex-start;
+      padding-top: 0.2rem;
+    }
+
+    /* SECTIONS COMMON */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 0.8rem;
+      font-family: 'Syne', sans-serif;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+    .section-title span { color: var(--mint); }
+    .divider {
+      width: 48px; height: 2px;
+      background: var(--mint);
+      margin-bottom: 2rem;
+    }
+
+    /* ABOUT */
+    #about { border-top: 1px solid var(--mint-border); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .about-text p {
+      color: var(--gray);
+      margin-bottom: 1rem;
+      font-size: 1.02rem;
+    }
+    .about-text p strong { color: var(--white); }
+    .about-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .stat-card {
+      background: var(--black3);
+      border: 1px solid var(--mint-border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-card:hover { border-color: var(--mint); transform: translateY(-3px); }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--mint);
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-top: 0.3rem;
+    }
+
+    /* PROGRAM */
+    #program { border-top: 1px solid var(--mint-border); }
+    .weeks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .week-card {
+      background: var(--black3);
+      border: 1px solid var(--mint-border);
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .week-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--mint), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .week-card:hover { border-color: var(--mint); transform: translateY(-4px); }
+    .week-card:hover::before { opacity: 1; }
+    .week-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 0.6rem;
+    }
+    .week-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      line-height: 1.3;
+    }
+    .week-desc {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+    .week-speaker {
+      font-size: 0.8rem;
+      color: var(--mint-dim);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .week-speaker::before {
+      content: '▸';
+      font-size: 0.7rem;
+    }
+
+    /* SPEAKERS */
+    #speakers { border-top: 1px solid var(--mint-border); }
+    .speakers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+    .speaker-card {
+      background: var(--black3);
+      border: 1px solid var(--mint-border);
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .speaker-card:hover { border-color: var(--mint); transform: translateY(-4px); }
+    .speaker-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--black4);
+      border: 2px solid var(--mint-border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--mint);
+    }
+    .speaker-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .speaker-role {
+      font-size: 0.82rem;
+      color: var(--mint-dim);
+      margin-top: 0.1rem;
+    }
+    .speaker-week {
+      display: inline-block;
+      background: var(--mint-faint);
+      border: 1px solid var(--mint-border);
+      color: var(--mint);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+      width: fit-content;
+    }
+    .speaker-bio {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+
+    /* FAQ */
+    #faq { border-top: 1px solid var(--mint-border); }
+    .faq-list {
+      margin-top: 2.5rem;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .faq-item {
+      background: var(--black3);
+      border: 1px solid var(--mint-border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item:hover { border-color: rgba(77,255,210,0.3); }
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 600;
+      padding: 1.3rem 1.5rem;
+      text-align: left;
+      cursor: none;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 1rem;
+    }
+    .faq-icon {
+      color: var(--mint);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 1.5rem;
+      font-size: 0.92rem;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-a {
+      max-height: 200px;
+      padding: 0 1.5rem 1.3rem;
+    }
+
+    /* TESTIMONIALS */
+    #testimonials { border-top: 1px solid var(--mint-border); }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .testimonial-card {
+      background: var(--black3);
+      border: 1px solid var(--mint-border);
+      border-radius: 10px;
+      padding: 1.8rem;
+      position: relative;
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute; top: 1rem; right: 1.5rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 4rem;
+      color: var(--mint);
+      opacity: 0.12;
+      line-height: 1;
+    }
+    .testimonial-text {
+      font-size: 0.92rem;
+      color: var(--gray);
+      font-style: italic;
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+    .testimonial-author {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--mint);
+    }
+    .testimonial-from {
+      font-size: 0.78rem;
+      color: var(--gray2);
+      margin-top: 0.2rem;
+    }
+
+    /* APPLICATION */
+    #apply { border-top: 1px solid var(--mint-border); }
+    .apply-wrap {
+      background: var(--black3);
+      border: 1px solid var(--mint-border);
+      border-radius: 14px;
+      padding: 3rem;
+      margin-top: 2.5rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .form-group {
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      font-family: 'Syne', sans-serif;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--black4);
+      border: 1px solid var(--mint-border);
+      border-radius: 6px;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--mint);
+    }
+    .form-group select option { background: var(--black4); }
+    .form-group textarea { min-height: 110px; }
+    .form-submit {
+      margin-top: 1.8rem;
+      text-align: center;
+    }
+    .form-submit button {
+      background: var(--mint);
+      color: var(--black);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 1rem 3rem;
+      border: none;
+      border-radius: 6px;
+      cursor: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.05em;
+    }
+    .form-submit button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(77,255,210,0.4);
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+    .form-success h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      color: var(--mint);
+      margin-bottom: 0.5rem;
+    }
+    .form-success p { color: var(--gray); }
+
+    /* CONTACT */
+    #contact { border-top: 1px solid var(--mint-border); }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    .contact-info p {
+      color: var(--gray);
+      margin-bottom: 1rem;
+      font-size: 0.97rem;
+    }
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--mint);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      border-bottom: 1px solid var(--mint-border);
+      padding-bottom: 0.2rem;
+      transition: border-color 0.2s;
+    }
+    .contact-email:hover { border-color: var(--mint); }
+    .contact-form-mini {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--mint-border);
+      padding: 3rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      max-width: 100%;
+    }
+    .footer-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--mint);
+      letter-spacing: 0.12em;
+    }
+    .footer-tagline {
+      font-size: 0.82rem;
+      color: var(--gray2);
+      margin-top: 0.3rem;
+    }
+    .footer-links {
+      display: flex; gap: 2rem; list-style: none; flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--gray);
+      font-size: 0.82rem;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--mint); }
+    .footer-socials {
+      display: flex; gap: 1rem;
+    }
+    .social-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--mint-border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-btn:hover { border-color: var(--mint); color: var(--mint); }
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--gray2);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--mint);
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 60px; left: 0; right: 0;
+        background: rgba(8,8,8,0.97);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--mint-border);
+        flex-direction: column;
+        padding: 1.5rem 2rem;
+        gap: 1.2rem;
+        z-index: 99;
+      }
+      .nav-links.open { display: flex; }
+      .nav-cta-desktop { display: none; }
+      .about-grid, .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+      footer { flex-direction: column; padding: 2rem 1.5rem; align-items: flex-start; }
+      section { padding: 4rem 1.2rem; }
+      .apply-wrap { padding: 1.8rem 1.2rem; }
+      div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--mint-border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--mint-dim); }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">LEARNSPECTRA</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#program">Program</a></li>
+    <li><a href="#speakers">Speakers</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#apply" class="nav-cta nav-cta-desktop">Get Notified</a>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="max-width:100%; padding-top:8rem;">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <!-- Replace src with your actual logo path -->
+  <img
+    src="Add_a_little_bit_of_body_text.png"
+    alt="LearnSpectra Logo"
+    class="logo-img"
+    onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';"
+  />
+  <div id="logo-fallback" style="display:none; font-family:'Syne',sans-serif; font-size:2.5rem; font-weight:800; color:var(--mint); letter-spacing:0.15em; margin-bottom:2rem; animation: fadeUp 0.9s ease both;">
+    LEARNSPECTRA
+  </div>
+
+  <h1 class="hero-tagline">
+    Your <span>STEM journey</span> starts here —<br>no matter where you're from.
+  </h1>
+  <p class="hero-sub">
+    A free, 5-week student-led initiative for motivated students aged 14–19 from anywhere in the world.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#apply" class="btn-primary">Get Notified →</a>
+    <a href="#program" class="btn-ghost">See Program</a>
+  </div>
+
+  <div class="countdown-wrap">
+    <div class="countdown-label">Applications open for Summer 2026 in</div>
+    <div class="countdown" id="countdown">
+      <div class="countdown-block">
+        <div class="countdown-num" id="cd-days">00</div>
+        <div class="countdown-unit">Days</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-block">
+        <div class="countdown-num" id="cd-hours">00</div>
+        <div class="countdown-unit">Hours</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-block">
+        <div class="countdown-num" id="cd-mins">00</div>
+        <div class="countdown-unit">Minutes</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-block">
+        <div class="countdown-num" id="cd-secs">00</div>
+        <div class="countdown-unit">Seconds</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <div class="section-label">Our Mission</div>
+      <h2 class="section-title">Built by a student,<br><span>for students.</span></h2>
+      <div class="divider"></div>
+      <p>LearnSpectra was founded on a simple belief: <strong>where you come from should never determine how far you can go</strong> in science.</p>
+      <p>Too many brilliant young minds — especially from the Global South — never find their entry point into STEM research. Not because they lack talent, but because they lack access to the right spaces, mentors, and information.</p>
+      <p>LearnSpectra exists to change that. In 5 weeks, we open doors — to real researchers, real tools, and a real community of peers who are just as curious as you are.</p>
+      <p><strong>No credentials required. No financial barriers. Just curiosity and drive.</strong></p>
+    </div>
+    <div class="about-stat-grid">
+      <div class="stat-card">
+        <div class="stat-num">14–19</div>
+        <div class="stat-label">Age range we serve</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Weeks of live sessions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Free for all students</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Online & accessible</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section id="program">
+  <div class="reveal">
+    <div class="section-label">The Curriculum</div>
+    <h2 class="section-title">5 Weeks. <span>Real Impact.</span></h2>
+    <div class="divider"></div>
+    <p style="color:var(--gray); max-width:560px; margin-bottom:0.5rem;">
+      Five weeks of recorded sessions, curated readings, and live Q&amp;A with leading researchers and practitioners — all free, all student-led.
+    </p>
+  </div>
+  <div class="weeks-grid">
+    <div class="week-card reveal">
+      <div class="week-num">Week 01</div>
+      <div class="week-title">How to Start: Navigating STEM as a Young Student</div>
+      <div class="week-desc">How to begin your STEM journey, find opportunities, and build your foundation — no matter where you're starting from.</div>
+      <div class="week-speaker">Speaker: TBA</div>
+    </div>
+    <div class="week-card reveal">
+      <div class="week-num">Week 02</div>
+      <div class="week-title">Research & Its Importance</div>
+      <div class="week-desc">How to think like a researcher, why research matters across every scientific field, and how to get started early.</div>
+      <div class="week-speaker">Jonah Boucher — CEO, Non-Trivial</div>
+    </div>
+    <div class="week-card reveal">
+      <div class="week-num">Week 03</div>
+      <div class="week-title">Problem Solving & Innovation</div>
+      <div class="week-desc">Frameworks for tackling real-world problems using science and systems thinking.</div>
+      <div class="week-speaker">Speaker: TBA</div>
+    </div>
+    <div class="week-card reveal">
+      <div class="week-num">Week 04</div>
+      <div class="week-title">AI Safety</div>
+      <div class="week-desc">The biggest challenge of our generation — and how to think about it seriously. Featured Partner: BlueDot Impact.</div>
+      <div class="week-speaker">Speaker from BlueDot Impact (coming soon)</div>
+    </div>
+    <div class="week-card reveal">
+      <div class="week-num">Week 05</div>
+      <div class="week-title">Final Week: Submit & Present</div>
+      <div class="week-desc">Groups submit their research paper and present their work live in a final session — showcasing what they've learned across the program.</div>
+      <div class="week-speaker">All students present</div>
+    </div>
+  </div>
+
+  <!-- THREE PILLARS -->
+  <div class="reveal" style="margin-top:4rem;">
+    <div class="section-label">How It Works</div>
+    <h3 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--white); margin-bottom:0.8rem;">Three Pillars of the Program</h3>
+    <div class="divider"></div>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; margin-top:0.5rem;">
+    <div class="stat-card reveal" style="padding:2rem;">
+      <div style="color:var(--mint); font-size:1.8rem; margin-bottom:0.8rem;">①</div>
+      <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:var(--white); margin-bottom:0.6rem;">Recorded Sessions</div>
+      <div style="font-size:0.88rem; color:var(--gray); line-height:1.7;">Instructor-led lectures with slides — available on your own schedule, no fixed time required.</div>
+    </div>
+    <div class="stat-card reveal" style="padding:2rem;">
+      <div style="color:var(--mint); font-size:1.8rem; margin-bottom:0.8rem;">②</div>
+      <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:var(--white); margin-bottom:0.6rem;">Curated Reading Links</div>
+      <div style="font-size:0.88rem; color:var(--gray); line-height:1.7;">Selected links from Effective Altruism, 80,000 Hours, and leading voices at the intersection of STEM and global impact. Links only — no content reproduced.</div>
+    </div>
+    <div class="stat-card reveal" style="padding:2rem;">
+      <div style="color:var(--mint); font-size:1.8rem; margin-bottom:0.8rem;">③</div>
+      <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:var(--white); margin-bottom:0.6rem;">Live Q&amp;A — 1 Hour/Week</div>
+      <div style="font-size:0.88rem; color:var(--gray); line-height:1.7;">A live session each week with a leader or practitioner in the field. Students ask the questions — no lectures, just conversation.</div>
+    </div>
+  </div>
+
+  <!-- SESSION SUMMARY -->
+  <div class="reveal" style="margin-top:2rem; background:var(--black3); border:1px solid var(--mint-border); border-radius:10px; padding:2rem;">
+    <div style="font-family:'Syne',sans-serif; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--mint); margin-bottom:0.6rem;">Student Requirement</div>
+    <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:var(--white); margin-bottom:0.6rem;">Session Summaries</div>
+    <div style="font-size:0.92rem; color:var(--gray); line-height:1.7;">After every recorded session, each student submits a written summary covering: key takeaways, what challenged or surprised them, and one question they're still thinking about.</div>
+  </div>
+
+  <!-- RESEARCH PAPER -->
+  <div class="reveal" style="margin-top:3.5rem;">
+    <div class="section-label">Group Project</div>
+    <h3 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--white); margin-bottom:0.8rem;">Research Paper</h3>
+    <div class="divider"></div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:0.5rem;">
+    <div class="stat-card reveal" style="padding:1.8rem;">
+      <div style="font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--mint); margin-bottom:0.5rem;">Groups</div>
+      <div style="font-size:0.92rem; color:var(--gray); line-height:1.6;">3–4 students, formed in Week 1. Each group selects a different angle from the program's themes.</div>
+    </div>
+    <div class="stat-card reveal" style="padding:1.8rem;">
+      <div style="font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--mint); margin-bottom:0.5rem;">Length & Format</div>
+      <div style="font-size:0.92rem; color:var(--gray); line-height:1.6;">1,000–1,500 words. Submitted as PDF or Google Doc at the end of Week 5.</div>
+    </div>
+    <div class="stat-card reveal" style="padding:1.8rem;">
+      <div style="font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--mint); margin-bottom:0.5rem;">Writing Rules</div>
+      <div style="font-size:0.92rem; color:var(--gray); line-height:1.6;">Written entirely by students. No AI-generated text. Must include ideas drawn directly from program sessions.</div>
+    </div>
+    <div class="stat-card reveal" style="padding:1.8rem;">
+      <div style="font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--mint); margin-bottom:0.5rem;">Paper Structure</div>
+      <div style="font-size:0.92rem; color:var(--gray); line-height:1.6;">Introduction · Main Argument · Evidence & Analysis · Conclusion · What Stayed With Us · Sources</div>
+    </div>
+  </div>
+
+  <!-- RUBRIC -->
+  <div class="reveal" style="margin-top:3.5rem;">
+    <div class="section-label">Assessment</div>
+    <h3 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--white); margin-bottom:0.8rem;">Grading Rubric</h3>
+    <div class="divider"></div>
+    <p style="color:var(--gray); font-size:0.9rem; margin-bottom:1.5rem;">Shared with all students from Day 1.</p>
+    <div style="background:var(--black3); border:1px solid var(--mint-border); border-radius:10px; overflow:hidden;">
+      <table style="width:100%; border-collapse:collapse; font-size:0.88rem;">
+        <thead>
+          <tr style="background:rgba(77,255,210,0.07);">
+            <th style="padding:1rem 1.5rem; text-align:left; font-family:'Syne',sans-serif; color:var(--mint); letter-spacing:0.08em; font-size:0.78rem; text-transform:uppercase;">Criteria</th>
+            <th style="padding:1rem 1.5rem; text-align:right; font-family:'Syne',sans-serif; color:var(--mint); letter-spacing:0.08em; font-size:0.78rem; text-transform:uppercase;">Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-top:1px solid var(--mint-border);"><td style="padding:0.9rem 1.5rem; color:var(--white);">Written Paper — Argument Clarity</td><td style="padding:0.9rem 1.5rem; color:var(--mint); font-family:'Syne',sans-serif; font-weight:700; text-align:right;">20%</td></tr>
+          <tr style="border-top:1px solid var(--mint-border);"><td style="padding:0.9rem 1.5rem; color:var(--white);">Written Paper — Evidence &amp; Sources</td><td style="padding:0.9rem 1.5rem; color:var(--mint); font-family:'Syne',sans-serif; font-weight:700; text-align:right;">20%</td></tr>
+          <tr style="border-top:1px solid var(--mint-border);"><td style="padding:0.9rem 1.5rem; color:var(--white);">Written Paper — Program Session Quotes</td><td style="padding:0.9rem 1.5rem; color:var(--mint); font-family:'Syne',sans-serif; font-weight:700; text-align:right;">10%</td></tr>
+          <tr style="border-top:1px solid var(--mint-border);"><td style="padding:0.9rem 1.5rem; color:var(--white);">Written Paper — Writing Quality</td><td style="padding:0.9rem 1.5rem; color:var(--mint); font-family:'Syne',sans-serif; font-weight:700; text-align:right;">10%</td></tr>
+          <tr style="border-top:1px solid var(--mint-border);"><td style="padding:0.9rem 1.5rem; color:var(--white);">Presentation — Delivery</td><td style="padding:0.9rem 1.5rem; color:var(--mint); font-family:'Syne',sans-serif; font-weight:700; text-align:right;">15%</td></tr>
+          <tr style="border-top:1px solid var(--mint-border);"><td style="padding:0.9rem 1.5rem; color:var(--white);">Presentation — Content Depth</td><td style="padding:0.9rem 1.5rem; color:var(--mint); font-family:'Syne',sans-serif; font-weight:700; text-align:right;">15%</td></tr>
+          <tr style="border-top:1px solid var(--mint-border);"><td style="padding:0.9rem 1.5rem; color:var(--white);">What Stayed With Us</td><td style="padding:0.9rem 1.5rem; color:var(--mint); font-family:'Syne',sans-serif; font-weight:700; text-align:right;">10%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CERTIFICATES -->
+  <div class="reveal" style="margin-top:3.5rem;">
+    <div class="section-label">Recognition</div>
+    <h3 style="font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; color:var(--white); margin-bottom:0.8rem;">Certificates</h3>
+    <div class="divider"></div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+      <div class="stat-card reveal" style="padding:2rem;">
+        <div style="font-size:1.5rem; margin-bottom:0.8rem;">📄</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; color:var(--white); margin-bottom:0.6rem;">Participation Certificate</div>
+        <div style="font-size:0.88rem; color:var(--gray); line-height:1.7;">Awarded to every student who attends all Q&amp;A sessions, submits all session summaries, contributes to the group paper, and presents in the final session.</div>
+      </div>
+      <div class="stat-card reveal" style="padding:2rem; border-color:rgba(77,255,210,0.4);">
+        <div style="font-size:1.5rem; margin-bottom:0.8rem;">⭐</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; color:var(--mint); margin-bottom:0.6rem;">Distinguished Research Certificate</div>
+        <div style="font-size:0.88rem; color:var(--gray); line-height:1.7;">Awarded to the group with the highest overall rubric score. The winning group will be featured in a public post by LearnSpectra.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q&A NORMS & DISCORD -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:2rem;">
+    <div class="stat-card reveal" style="padding:2rem;">
+      <div style="font-family:'Syne',sans-serif; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--mint); margin-bottom:0.8rem;">Q&amp;A Session Norms</div>
+      <div style="font-size:0.88rem; color:var(--gray); line-height:1.7;">Sessions are student-driven — you ask the questions. Serious debate about STEM, AI Safety, careers, and impact is encouraged. Personal attacks and off-topic debates are not. A moderator will redirect when needed.</div>
+    </div>
+    <div class="stat-card reveal" style="padding:2rem;">
+      <div style="font-family:'Syne',sans-serif; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--mint); margin-bottom:0.8rem;">Community</div>
+      <div style="font-size:1.8rem; margin-bottom:0.6rem;">💬</div>
+      <div style="font-size:0.88rem; color:var(--gray); line-height:1.7;">All participants join a dedicated <strong style="color:var(--white);">LearnSpectra Discord server</strong> with channels for weekly discussions, group collaboration, and Q&amp;A question submissions.</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- SPEAKERS -->
+<section id="speakers">
+  <div class="reveal">
+    <div class="section-label">Who You'll Hear From</div>
+    <h2 class="section-title">Meet Our <span>Speakers</span></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="speakers-grid">
+    <div class="speaker-card reveal">
+      <img src="data:image/webp;base64,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" alt="Jonah Boucher" style="width:72px; height:72px; border-radius:50%; object-fit:cover; object-position: center top; border:2px solid var(--mint-border);" />
+      <div>
+        <div class="speaker-name">Jonah Boucher</div>
+        <div class="speaker-role">CEO — Non-Trivial</div>
+      </div>
+      <div class="speaker-week">Week 2</div>
+      <div class="speaker-bio">Jonah leads Non-Trivial, an organization supporting young researchers and ambitious thinkers working on humanity's most important challenges. He'll walk us through what real research looks like — and how you can start now.</div>
+    </div>
+    <div class="speaker-card reveal">
+      <div class="speaker-avatar">B</div>
+      <div>
+        <div class="speaker-name">BlueDot Impact Representative</div>
+        <div class="speaker-role">AI Safety Expert</div>
+      </div>
+      <div class="speaker-week">Week 4</div>
+      <div class="speaker-bio">A leading voice in AI safety from BlueDot Impact — one of the world's top organizations working to ensure AI benefits humanity. Details coming soon.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="reveal">
+    <div class="section-label">Got Questions?</div>
+    <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Who can apply? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Any student aged 14–19 with a genuine interest in any area of STEM. We don't care about your grades, your school, or your country — we care about your curiosity and drive.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is it free? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">LearnSpectra is completely free. This is a student-led initiative open to all motivated students aged 14–19 from anywhere in the world.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Is it online or in-person? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">The program is fully online, so students from anywhere in the world can participate. All you need is a device and an internet connection.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        How are students selected? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Through open essay questions. We look for curiosity and drive — not credentials, grades, or prior experience. This initiative is free and open to motivated students aged 14–19 from anywhere in the world.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        What will I gain from this program? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Access to world-class speakers, a dedicated Discord community, research skills, a group research paper experience, certificates, and a much clearer direction for your STEM journey.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        Do I need prior STEM experience? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">Not at all. This program is designed for students at the beginning of their STEM journey. Whether you're just discovering your interest or already building projects, you're welcome here.</div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- APPLICATION / NOTIFY -->
+<section id="apply">
+  <div class="reveal" style="text-align:center; max-width: 620px; margin: 0 auto;">
+    <div class="section-label">Summer 2026</div>
+    <h2 class="section-title">Applications <span>Opening Soon</span></h2>
+    <div class="divider" style="margin: 0 auto 1.5rem;"></div>
+    <p style="color:var(--gray); font-size:1rem; margin-bottom:0.5rem;">
+      We're getting everything ready for our first cohort. Be the first to know when applications open — drop your email below and we'll notify you the moment they do.
+    </p>
+  </div>
+
+  <div class="apply-wrap reveal" style="max-width:560px; margin: 2.5rem auto 0; text-align:center;">
+    <div id="notify-form">
+      <div style="font-size:2.8rem; margin-bottom:1.2rem; filter: drop-shadow(0 0 12px rgba(77,255,210,0.4));">✦</div>
+      <p style="color:var(--gray); font-size:0.92rem; margin-bottom:2rem;">
+        No spam. Just one email when applications open for <strong style="color:var(--white);">LearnSpectra Summer 2026</strong>.
+      </p>
+      <div style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center;">
+        <input
+          type="email"
+          id="notify-email"
+          placeholder="your@email.com"
+          style="flex:1; min-width:220px; background:var(--black4); border:1px solid var(--mint-border); border-radius:6px; color:var(--white); font-family:'DM Sans',sans-serif; font-size:0.95rem; padding:0.85rem 1.1rem; outline:none; transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='var(--mint)'"
+          onblur="this.style.borderColor='var(--mint-border)'"
+        />
+        <button
+          onclick="submitNotify()"
+          style="background:var(--mint); color:var(--black); font-family:'Syne',sans-serif; font-weight:700; font-size:0.92rem; padding:0.85rem 1.8rem; border:none; border-radius:6px; cursor:none; white-space:nowrap; transition:transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 16px rgba(77,255,210,0.25);"
+          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 0 28px rgba(77,255,210,0.5)'"
+          onmouseout="this.style.transform='none'; this.style.boxShadow='0 0 16px rgba(77,255,210,0.25)'"
+        >
+          Notify Me →
+        </button>
+      </div>
+    </div>
+
+    <div id="notify-success" style="display:none; padding:2rem 1rem;">
+      <div style="font-size:2.5rem; margin-bottom:1rem; filter:drop-shadow(0 0 12px rgba(77,255,210,0.5));">✦</div>
+      <h3 style="font-family:'Syne',sans-serif; font-size:1.4rem; color:var(--mint); margin-bottom:0.6rem;">You're on the list!</h3>
+      <p style="color:var(--gray); font-size:0.92rem;">We'll email you the moment applications open for LearnSpectra Summer 2026. Stay curious. 🌱</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap reveal">
+    <div class="contact-info">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Have a <span>Question?</span></h2>
+      <div class="divider"></div>
+      <p>Whether you're a student, a parent, a potential speaker, or just curious about what we're building — we'd love to hear from you.</p>
+      <a href="mailto:learnspectra.help@gmail.com" class="contact-email">
+        ✉ learnspectra.help@gmail.com
+      </a>
+    </div>
+    <div class="contact-form-mini">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="c-name" placeholder="Name" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="c-email" placeholder="email@example.com" />
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="c-msg" placeholder="What's on your mind?" style="min-height:120px;"></textarea>
+      </div>
+      <button onclick="sendContact()" style="background:var(--mint); color:var(--black); font-family:'Syne',sans-serif; font-weight:700; padding:0.85rem 2rem; border:none; border-radius:6px; cursor:none; font-size:0.92rem; transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+        Send Message →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">LEARNSPECTRA</div>
+    <div class="footer-tagline">A Student-Led Initiative for the Next Generation of STEM Thinkers.</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#program">Program</a></li>
+    <li><a href="#speakers">Speakers</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#apply">Apply</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-socials">
+    <a href="https://www.linkedin.com/company/learnspectra/" target="_blank" rel="noopener noreferrer" class="social-btn" title="LinkedIn">in</a>
+    <a href="#" class="social-btn" title="Instagram">ig</a>
+    <a href="mailto:learnspectra.help@gmail.com" class="social-btn" title="Email">✉</a>
+  </div>
+  <div class="footer-copy">
+    © 2026 LearnSpectra. All rights reserved. Built with purpose.
+  </div>
+</footer>
+
+<script>
+  // --- MOBILE NAV ---
+  function toggleNav() {
+    const links = document.querySelector('.nav-links');
+    const btn = document.getElementById('hamburger');
+    links.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+  // Close nav when a link is clicked
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    });
+  });
+
+  // --- CURSOR ---
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // --- COUNTDOWN ---
+  // ✏️ CHANGE THIS DATE to your actual application deadline
+  const DEADLINE = new Date('2026-09-01T23:59:59');
+  function updateCountdown() {
+    const now = new Date();
+    const diff = DEADLINE - now;
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML = '<div style="color:var(--mint); font-family:\'Syne\',sans-serif; font-size:1rem; font-weight:700; letter-spacing:0.1em;">✦ Applications for Summer 2026 opening soon — get notified below!</div>';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // --- SCROLL REVEAL ---
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // --- FAQ ---
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    item.classList.toggle('open');
+  }
+
+  // --- NOTIFY ME (Formspree) ---
+  // SETUP: Go to https://formspree.io → New Form → name it "Waitlist"
+  // Copy your form ID (looks like: xpwzabcd) and replace WAITLIST_FORM_ID below
+  const WAITLIST_FORM_ID = 'xykaword'; // ← replace this
+
+  async function submitNotify() {
+    const email = document.getElementById('notify-email').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    const btn = document.querySelector('#notify-form button');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try {
+      const res = await fetch(`https://formspree.io/f/${WAITLIST_FORM_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email, _subject: 'LearnSpectra Waitlist Signup' })
+      });
+      if (res.ok) {
+        document.getElementById('notify-form').style.display = 'none';
+        document.getElementById('notify-success').style.display = 'block';
+      } else {
+        btn.textContent = 'Notify Me →';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again or email us directly.');
+      }
+    } catch (e) {
+      btn.textContent = 'Notify Me →';
+      btn.disabled = false;
+      alert('Connection error. Please check your internet and try again.');
+    }
+  }
+
+  // --- CONTACT FORM (Formspree) ---
+  // SETUP: Go to https://formspree.io → New Form → name it "Contact"
+  // Copy your form ID and replace CONTACT_FORM_ID below
+  const CONTACT_FORM_ID = 'xrevqdzz'; // ← replace this
+
+  async function sendContact() {
+    const name = document.getElementById('c-name').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const msg = document.getElementById('c-msg').value.trim();
+    if (!name || !email || !msg) { alert('Please fill in all fields.'); return; }
+    const btn = document.querySelector('#contact button');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try {
+      const res = await fetch(`https://formspree.io/f/${CONTACT_FORM_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name, email, message: msg, _subject: `LearnSpectra Contact from ${name}` })
+      });
+      if (res.ok) {
+        btn.textContent = 'Sent ✦';
+        document.getElementById('c-name').value = '';
+        document.getElementById('c-email').value = '';
+        document.getElementById('c-msg').value = '';
+        setTimeout(() => { btn.textContent = 'Send Message →'; btn.disabled = false; }, 3000);
+      } else {
+        btn.textContent = 'Send Message →';
+        btn.disabled = false;
+        alert('Something went wrong. Please email us at learnspectra.help@gmail.com');
+      }
+    } catch (e) {
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
+      alert('Connection error. Please try again.');
+    }
+  }
+</script>
+</body>
+</html>
